@@ -39,6 +39,40 @@ If both commands return version numbers, you are ready.
 - `src/middlewares`: request middlewares
 - `src/config`: app configuration
 
+## How To Clone the Repository from GitHub
+
+Before running the project, you need to download it from GitHub.
+
+### What You Need
+
+- Git installed on your computer: https://git-scm.com/downloads
+
+Check it is installed:
+
+```bash
+git --version
+```
+
+If it returns a version number, you are ready.
+
+### Steps
+
+1. Go to the repository page on GitHub.
+2. Click the green **Code** button and copy the URL (HTTPS option).
+3. Open a terminal and run:
+
+```bash
+git clone https://github.com/your-username/MaisonFlorae.git
+```
+
+4. Navigate into the project folder:
+
+```bash
+cd MaisonFlorae/APP/MaisonFloraeBackend
+```
+
+Now continue with the steps below.
+
 ## How To Run Locally
 
 1. Open terminal in this folder (`MaisonFloraeBackend`).
