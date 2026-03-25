@@ -11,7 +11,14 @@ export const getProducts = async (req, res) => {
 
 export const createProduct = async (req, res) => {
   try {
-    const { name, description, price, imageUrl, category, inStock } = req.body;
+    const payload = req.body;
+
+    if (Array.isArray(payload)) {
+      const newProducts = await Product.insertMany(payload);
+      return res.status(201).json(newProducts);
+    }
+
+    const { name, description, price, imageUrl, category, inStock } = payload;
 
     const newProduct = await Product.create({
       name,
@@ -24,6 +31,9 @@ export const createProduct = async (req, res) => {
 
     res.status(201).json(newProduct);
   } catch (error) {
-    res.status(500).json({ message: "Failed to create product" });
+    res.status(500).json({
+      message: "Failed to create product(s)",
+      error: error.message,
+    });
   }
 };
