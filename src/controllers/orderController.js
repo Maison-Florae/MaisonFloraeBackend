@@ -3,7 +3,20 @@ import Order from "../models/order.js";
 // GET ALL ORDERS
 export const getOrders = async (req, res) => {
   try {
-    const orders = await Order.find().sort({ createdAt: -1 });
+    const { status, paymentStatus } = req.query;
+
+    const filter = {};
+
+    if (status) {
+      filter.status = status;
+    }
+
+    if (paymentStatus) {
+      filter.paymentStatus = paymentStatus;
+    }
+
+    const orders = await Order.find(filter).sort({ createdAt: -1 });
+
     res.status(200).json(orders);
   } catch (error) {
     console.error(error);
