@@ -37,14 +37,15 @@ export const createOrder = async (req, res) => {
       items,
       totalPrice,
       status,
+      paymentStatus,
     } = req.body;
 
     if (
       !customerName ||
       !customerEmail ||
       !deliveryAddress ||
-      !items ||
-      !totalPrice
+      !items?.length ||
+      totalPrice === undefined
     ) {
       return res
         .status(400)
@@ -58,6 +59,7 @@ export const createOrder = async (req, res) => {
       items,
       totalPrice,
       status,
+      paymentStatus,
     });
 
     res.status(201).json(newOrder);

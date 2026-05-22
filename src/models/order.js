@@ -52,15 +52,16 @@ const orderSchema = new mongoose.Schema(
         "Order must contain at least one item",
       ],
     },
-    totalPrice: {
-      type: Number,
-      required: true,
-      min: 0,
-    },
     status: {
       type: String,
-      enum: ["pending", "paid", "delivered", "cancelled"],
+      enum: ["pending", "processing", "delivered", "cancelled"],
       default: "pending",
+    },
+
+    paymentStatus: {
+      type: String,
+      enum: ["unpaid", "paid", "failed", "refunded"],
+      default: "unpaid",
     },
   },
   {
