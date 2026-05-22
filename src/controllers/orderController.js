@@ -51,6 +51,17 @@ export const createOrder = async (req, res) => {
       });
     }
 
+    const invalidPrice = items.some(
+      (item) =>
+        item.price === undefined || item.price === null || item.price < 0,
+    );
+
+    if (invalidPrice) {
+      return res.status(400).json({
+        message: "Item price cannot be negative",
+      });
+    }
+
     const newOrder = await Order.create({
       customerName,
       customerEmail,

@@ -7,19 +7,24 @@ const orderItemSchema = new mongoose.Schema(
       ref: "Product",
       required: true,
     },
+
     name: {
       type: String,
       required: true,
     },
+
     price: {
       type: Number,
       required: true,
+      min: [0, "Price cannot be negative"],
     },
+
     quantity: {
       type: Number,
       required: true,
       min: 1,
     },
+
     imageUrl: {
       type: String,
     },
