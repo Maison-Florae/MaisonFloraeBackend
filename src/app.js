@@ -15,4 +15,11 @@ app.get("/", (req, res) => {
 app.use("/api/products", productRoutes);
 app.use("/api/orders", orderRoutes);
 
+// HANDLE WRONG ROUTES
+app.use((req, res) => {
+  res.status(404).json({
+    message: "Route not found",
+  });
+});
+
 export default app;

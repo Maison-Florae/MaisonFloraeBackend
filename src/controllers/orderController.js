@@ -6,7 +6,11 @@ export const getOrders = async (req, res) => {
     const orders = await Order.find().sort({ createdAt: -1 });
     res.status(200).json(orders);
   } catch (error) {
-    res.status(500).json({ message: "Failed to fetch orders" });
+    console.error(error);
+
+    res.status(500).json({
+      message: error.message || "Failed to fetch orders",
+    });
   }
 };
 
@@ -14,6 +18,12 @@ export const getOrders = async (req, res) => {
 export const getOrderById = async (req, res) => {
   try {
     const { id } = req.params;
+
+    if (!id.match(/^[0-9a-fA-F]{24}$/)) {
+      return res.status(400).json({
+        message: "Invalid order ID",
+      });
+    }
 
     const order = await Order.findById(id);
 
@@ -23,7 +33,11 @@ export const getOrderById = async (req, res) => {
 
     res.status(200).json(order);
   } catch (error) {
-    res.status(500).json({ message: "Failed to fetch order" });
+    console.error(error);
+
+    res.status(500).json({
+      message: error.message || "Failed to fetch order",
+    });
   }
 };
 
@@ -64,7 +78,11 @@ export const createOrder = async (req, res) => {
 
     res.status(201).json(newOrder);
   } catch (error) {
-    res.status(500).json({ message: "Failed to create order" });
+    console.error(error);
+
+    res.status(500).json({
+      message: error.message || "Failed to create order",
+    });
   }
 };
 
@@ -72,6 +90,12 @@ export const createOrder = async (req, res) => {
 export const updateOrder = async (req, res) => {
   try {
     const { id } = req.params;
+
+    if (!id.match(/^[0-9a-fA-F]{24}$/)) {
+      return res.status(400).json({
+        message: "Invalid order ID",
+      });
+    }
 
     const updatedOrder = await Order.findByIdAndUpdate(id, req.body, {
       new: true,
@@ -84,7 +108,11 @@ export const updateOrder = async (req, res) => {
 
     res.status(200).json(updatedOrder);
   } catch (error) {
-    res.status(500).json({ message: "Failed to update order" });
+    console.error(error);
+
+    res.status(500).json({
+      message: error.message || "Failed to update order",
+    });
   }
 };
 
@@ -92,6 +120,12 @@ export const updateOrder = async (req, res) => {
 export const deleteOrder = async (req, res) => {
   try {
     const { id } = req.params;
+
+    if (!id.match(/^[0-9a-fA-F]{24}$/)) {
+      return res.status(400).json({
+        message: "Invalid order ID",
+      });
+    }
 
     const deletedOrder = await Order.findByIdAndDelete(id);
 
@@ -101,6 +135,10 @@ export const deleteOrder = async (req, res) => {
 
     res.status(200).json({ message: "Order deleted successfully" });
   } catch (error) {
-    res.status(500).json({ message: "Failed to delete order" });
+    console.error(error);
+
+    res.status(500).json({
+      message: error.message || "Failed to delete order",
+    });
   }
 };

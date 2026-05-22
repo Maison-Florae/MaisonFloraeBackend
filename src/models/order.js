@@ -34,16 +34,21 @@ const orderSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
+
     customerEmail: {
       type: String,
       required: true,
       trim: true,
+      lowercase: true,
+      match: [/^\S+@\S+\.\S+$/, "Invalid email format"],
     },
+
     deliveryAddress: {
       type: String,
       required: true,
       trim: true,
     },
+
     items: {
       type: [orderItemSchema],
       required: true,
@@ -52,6 +57,7 @@ const orderSchema = new mongoose.Schema(
         "Order must contain at least one item",
       ],
     },
+
     status: {
       type: String,
       enum: ["pending", "processing", "delivered", "cancelled"],
