@@ -1,5 +1,63 @@
 import Order from "../models/order.js";
 
+// GET ORDER STATISTICS
+export const getOrderStats = async (req, res) => {
+  try {
+    const totalOrders = await Order.countDocuments();
+
+    const pendingOrders = await Order.countDocuments({ status: "pending" });
+
+    const processingOrders = await Order.countDocuments({
+      status: "processing",
+    });
+
+    const deliveredOrders = await Order.countDocuments({
+      status: "delivered",
+    });
+
+    const cancelledOrders = await Order.countDocuments({
+      status: "cancelled",
+    });
+
+    const paidOrders = await Order.countDocuments({
+      paymentStatus: "paid",
+    });
+
+    const unpaidOrders = await Order.countDocuments({
+      paymentStatus: "unpaid",
+    });
+
+    const revenueResult = await Order.aggregate([
+      { $match: { paymentStatus: "paid" } },
+      {
+        $group: {
+          _id: null,
+          totalRevenue: { $sum: "$totalPrice" },
+        },
+      },
+    ]);
+
+    const totalRevenue = revenueResult[0]?.totalRevenue || 0;
+
+    res.status(200).json({
+      totalOrders,
+      pendingOrders,
+      processingOrders,
+      deliveredOrders,
+      cancelledOrders,
+      paidOrders,
+      unpaidOrders,
+      totalRevenue,
+    });
+  } catch (error) {
+    console.error(error);
+
+    res.status(500).json({
+      message: error.message || "Failed to fetch order statistics",
+    });
+  }
+};
+
 // GET ALL ORDERS
 export const getOrders = async (req, res) => {
   try {
